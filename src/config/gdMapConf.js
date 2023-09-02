@@ -15,10 +15,17 @@ export default {
     // 高德城市请求地址
     cityApiUrl : 'https://restapi.amap.com/v3/config/district',
     // 默认选中城市
+    // city: {
+    //     adcode: "110000",
+    //     center: "116.407387,39.904179",
+    //     citycode: "010",
+    //     name: "北京市"
+    // }
     city: {
-        adcode: "110000",
-        center: "116.407387,39.904179",
-        citycode: "010",
-        name: "北京市"
+        adcode: "250101",
+        center: "117.140109,36.667382",
+        citycode: "0531",
+        name: "济南市"
     }
+
 }
