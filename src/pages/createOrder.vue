@@ -17,6 +17,18 @@
           </picker>
         </view>
       </view>
+      <!-- 选择车辆类型 -->
+      <view class="panel--bar">
+        <text>车辆类型：</text>
+        <radio-group @change="vehicleTypeChange" class="radio-group-horizontal">
+          <label class="uni-list-cell uni-list-cell-pd" v-for="(item, index) in vehicleTypes" :key="item.value">
+            <view class="radio-label-horizontal">
+              <radio :value="item.value" :checked="item.value === vehicleType" />
+              <view class="label-text">{{ item.name }}</view>
+            </view>
+          </label>
+        </radio-group>
+      </view>
       <view class="operation">
         <button class="btn btn__cancel" @click="handleCancel">取消</button>
         <button class="btn" @click="handleConfirm">确认呼叫</button>
@@ -29,7 +41,7 @@
 <script setup>
 import BMap from '../component/BMap.vue';
 import {onLoad} from '@dcloudio/uni-app';
-import {computed, nextTick, onMounted, ref} from 'vue';
+import {computed, nextTick, onMounted, ref, watch} from 'vue';
 import {useStore} from 'vuex';
 import {HandleApiError} from '../utils';
 import {ApiGetPrice, ApiPostOrderAdd, ApiGetCurrentOrder} from '../api/order';
@@ -48,7 +60,24 @@ let priceResult = ref({});
 let departTime = ref();
 let departDay = ref();
 
+let vehicleType = ref('1'); // 确保使用ref声明
+let vehicleTypes = [
+  {
+    name: '经济型',
+    value: '1'
+  },
+  {
+    name: '商务型',
+    value: '2'
+  }
+]
 
+const vehicleTypeChange = (e) => {
+  vehicleType.value = e.detail.value;
+  getPrice();
+}
+
+// 接收传来的参数
 onLoad((option) => {
   $routerQuery = option;
 });
@@ -56,6 +85,7 @@ onLoad((option) => {
 
 onMounted(() => {
   getUserProgressOrder();
+  // selectVehicleType(1); // 默认选择经济型
   getPrice();
   departDay.value = _FormatDate(new Date(), 'yyyy-mm-dd');
   departTime.value = _FormatDate(new Date().getTime() + 5 * 60 * 1000, 'hh:ii');
@@ -76,7 +106,7 @@ const getPrice = async () => {
     depLatitude,
     destLongitude,
     destLatitude,
-    vehicleType: 1,
+    vehicleType: vehicleType.value,
     cityCode: city.value.adcode
   });
   if (!HandleApiError(error)) {
@@ -92,6 +122,19 @@ const getPrice = async () => {
 const handleTimeChange = (e) => {
   departTime.value = e.detail.value;
 }
+
+watch(vehicleType, (newValue, oldValue) => {
+  // 监听车辆类型变化，并在变化时调用 getPrice() 方法
+  getPrice();
+});
+
+// const selectVehicleType = (type) => {
+//   if (type !== vehicleType.value) {
+//     vehicleType.value = type; // 更新车辆类型
+//     getPrice(); // 重新预估价格
+//   }
+// };
+
 
 
 const handleConfirm = async () => {
@@ -118,7 +161,7 @@ const handleConfirm = async () => {
     fareVersion: priceResult.value.fareVersion,
     passengerId: userInfo.value.id,
     passengerPhone: userInfo.value.passengerPhone,
-    vehicleType: priceResult.value.vehicleType
+    vehicleType: vehicleType.value, // 包括车辆类型
   });
   if (!HandleApiError(error)) {
     uni.redirectTo({url: '/pages/orderDetail'})
@@ -171,6 +214,31 @@ const getUserProgressOrder = async () => {
                 font-size: $uni-font-size-base;
                 color: $uni-text-color;
             }
+/*          .radio-group {
+            display: flex;
+            align-items: center; !* 垂直居中对齐 *!
+          }
+          .radio-label {
+            margin-right: 20px; !* 控制按钮之间的间距，根据需要调整 *!
+            display: flex;
+            flex-direction: column; !* 竖直方向排列，按钮在上，文字在下 *!
+            align-items: center; !* 文字水平居中对齐 *!
+          }*/
+          .radio-group-horizontal {
+            display: flex;
+            gap: 20px; /* 控制按钮之间的间距，根据需要调整 */
+          }
+
+          .radio-label-horizontal {
+            display: flex;
+            flex-direction: row; /* 水平方向排列，按钮在左侧，文字在右侧 */
+            align-items: center; /* 垂直居中对齐 */
+          }
+
+          .label-text {
+            margin-left: 5px; /* 控制按钮和文字之间的间距，根据需要调整 */
+          }
+
         }
         .price{
             font-size: 38rpx;

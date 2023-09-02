@@ -26,7 +26,7 @@ onMounted(() => {
   // 临时加的一个延迟
   setTimeout(() => {
     loadingFinish.value = true
-  }, 7000)
+  }, 3000)
 })
 
 /**
