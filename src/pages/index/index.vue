@@ -23,7 +23,7 @@ provide('mapSearch', (str, cb) => mapRef.value.search(cb, str));
 onMounted(() => {
   setCenter();
   watch(city, setCenter);
-  // 临时加的一个延迟 // TODO: 优化
+  // 临时加的一个延迟
   setTimeout(() => {
     loadingFinish.value = true
   }, 7000)

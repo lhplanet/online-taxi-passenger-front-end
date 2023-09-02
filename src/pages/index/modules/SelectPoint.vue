@@ -1,52 +1,47 @@
 <template>
-  <view class="select-box">
-    <view class="start" @click="startPointVisible = true">
-      <text v-if="!startPoint.id">您在哪上车？</text>
-      <template v-else>
-        <text>您将从</text>
-        <view class="start-point-text">{{ startPoint.name }}</view>
-        <text>上车</text>
-      </template>
+    <view class="select-box" >
+        <view class="start" @click="startPointVisible = true">
+            <text v-if="!startPoint.id">您在哪上车？</text>
+            <template v-else>
+                <text>您将从</text>
+                <view class="start-point-text">{{startPoint.name}}</view>
+                <text>上车</text>
+            </template>
+        </view>
+        <view class="end" @click="endPointVisible = true">  
+            <text>您要去哪儿？</text>
+        </view>
     </view>
-    <view class="end" @click="endPointVisible = true">
-      <text>您要去哪儿？</text>
-    </view>
-  </view>
-  <PointList v-model:visible="startPointVisible" @change="handleChangeStart"/>
-  <PointList v-model:visible="endPointVisible" @change="handleChangeEnd"/>
+    <PointList v-model:visible="startPointVisible" @change="handleChangeStart"/>
+    <PointList v-model:visible="endPointVisible" @change="handleChangeEnd"/>
 </template>
-
-
 <script setup>
 import {ref, watch, computed} from 'vue';
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 import PointList from './PointList.vue'
-
 const $emits = defineEmits(['confirm']);
 const $store = useStore();
-let startPointVisible = ref(false);
-let startPoint = ref({});
-let endPointVisible = ref(false);
-let endPoint = ref({});
-let city = computed(() => $store.state.city);
-
-watch(city, () => {
-  startPoint.value = {};
-  endPoint.value = {};
-});
-const handleChangeStart = (item) => {
-  startPoint.value = item;
-  endPoint.value = {};
-}
-const handleChangeEnd = (item) => {
-  endPoint.value = item;
-  if (startPoint.value.id) {
-    $emits('confirm', startPoint.value, endPoint.value);
-  }
-}
+    let startPointVisible = ref(false);
+    let startPoint = ref({});
+    let endPointVisible = ref(false);
+    let endPoint = ref({});
+    let city =  computed(()=> $store.state.city);
+    
+    watch( city, ()=>{
+		startPoint.value = {};
+        endPoint.value = {};
+	});
+    const handleChangeStart = (item) =>{
+        startPoint.value = item;
+        endPoint.value = {};
+    }
+    const handleChangeEnd = (item) =>{
+        endPoint.value = item;
+        if(startPoint.value.id){
+            $emits('confirm', startPoint.value, endPoint.value);
+        }
+    }
 </script>
-
-
 <style scoped lang="scss">
 .select-box{
     position: fixed;
@@ -103,7 +98,7 @@ const handleChangeEnd = (item) => {
         border-radius: 50%;
         background: #f0ad4e;
         margin-right: $uni-spacing-row-base;
-
+        
     }
 }
 </style>
