@@ -7,6 +7,13 @@
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
+        "uniCORS": {
+            "enable": true,
+            "origin": ["http://localhost:9001"], // 后端应用的地址
+            "headers": ["Authorization", "X-Auth-Token", "Content-Type"],
+            "methods": ["GET", "POST"],
+            "credentials": "include"
+        },
         "compatible" : {
             "ignoreVersion" : true //true表示忽略版本检查提示框，HBuilderX1.9.0及以上版本支持
         },
