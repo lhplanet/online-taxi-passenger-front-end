@@ -2,7 +2,7 @@
     <view :class="['point-search', {'point-search_show':myVisible}]">
         <view class="search-box">
             <text class="search-city" @click="handleCity">{{city.name}}</text>
-            <input class="search-input" v-model="searchStr" @input="handleSearch" placeholder="请输入关键词搜索"/>
+            <input ref="searchInput" class="search-input" v-model="searchStr" @input="handleSearch" placeholder="请输入关键词搜索" auto-focus :focus="myVisible"/>
             <text @click="myVisible = false">取消</text>
         </view>
         <view class="point-list">
@@ -14,7 +14,7 @@
     </view>
 </template>
 <script setup>
-import {computed, inject, ref} from 'vue';
+import {computed, inject, ref, watch, nextTick} from 'vue';
 import { useStore } from 'vuex';
 const $props = defineProps({
     visible: {
@@ -34,6 +34,25 @@ let myVisible = computed({
 });
 let searchStr = ref('');
 let searchList = ref([]);
+
+// 获取输入框元素的引用
+let searchInput = ref(null);
+
+// 监听 myVisible 变化，当变化时设置焦点状态
+watch(myVisible, async (newValue) => {
+  try {
+    if (newValue) {
+      await nextTick();
+      if (searchInput.value instanceof HTMLElement) {
+        searchInput.value.focus();
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+
 const handleSearch = () =>{
     piMapSearch(searchStr.value,(result)=>{
         searchList.value = result.pois;

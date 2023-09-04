@@ -1,17 +1,25 @@
 <template>
-    <view class="select-box" >
-        <view class="start" @click="startPointVisible = true">
-            <text v-if="!startPoint.id">您在哪上车？</text>
-            <template v-else>
-                <text>您将从</text>
-                <view class="start-point-text">{{startPoint.name}}</view>
-                <text>上车</text>
-            </template>
-        </view>
-        <view class="end" @click="endPointVisible = true">  
-            <text>您要去哪儿？</text>
-        </view>
+  <view class="select-box">
+    <view class="start" @click="startPointVisible = true">
+      <view class="icon-text">
+        <!-- 添加上车图标 -->
+        <image src="@/static/images/start-icon.png" class="icon" />
+        <text v-if="!startPoint.id">您要哪上车？</text>
+        <template v-else>
+          <text>您将从</text>
+          <view class="start-point-text">{{ startPoint.name }}</view>
+          <text>上车</text>
+        </template>
+      </view>
     </view>
+    <view class="end" @click="endPointVisible = true">
+      <view class="icon-text">
+        <!-- 添加目的地图标 -->
+        <image src="@/static/images/end-icon.png" class="icon" />
+        <text>您要去哪儿？</text>
+      </view>
+    </view>
+  </view>
     <PointList v-model:visible="startPointVisible" @change="handleChangeStart"/>
     <PointList v-model:visible="endPointVisible" @change="handleChangeEnd"/>
 </template>
@@ -26,7 +34,7 @@ const $store = useStore();
     let endPointVisible = ref(false);
     let endPoint = ref({});
     let city =  computed(()=> $store.state.city);
-    
+
     watch( city, ()=>{
 		startPoint.value = {};
         endPoint.value = {};
@@ -54,6 +62,16 @@ const $store = useStore();
     padding: $uni-spacing-row-max;
     box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.1);
 }
+.icon-text {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
 .start{
     height: 60rpx;
     font-size: $uni-font-size-base;
@@ -61,16 +79,16 @@ const $store = useStore();
     align-items: center;
     padding: 0 $uni-spacing-lg;
     margin-bottom: $uni-spacing-big;
-    &::before{
-        display: block;
-        content: '';
-        width: 10rpx;
-        height: 10rpx;
-        border-radius: 50%;
-        background: #19c235;
-        margin-right: $uni-spacing-row-base;
-
-    }
+    //&::before{
+    //    display: block;
+    //    content: '';
+    //    width: 10rpx;
+    //    height: 10rpx;
+    //    border-radius: 50%;
+    //    background: #19c235;
+    //    margin-right: $uni-spacing-row-base;
+    //
+    //}
 }
 .start-point-text{
     color: $uni-color-primary;
@@ -82,7 +100,7 @@ const $store = useStore();
     white-space: nowrap;
 }
 .end{
-    background: #eee;
+    background: rgba(238, 238, 238, 0.64);
     border-radius: $uni-border-radius-base;
     height: 70rpx;
     line-height: 70rpx;
@@ -90,15 +108,15 @@ const $store = useStore();
     display: flex;
     align-items: center;
     font-size: $uni-font-size-lg;
-    &::before{
-        display: block;
-        content: '';
-        width: 10rpx;
-        height: 10rpx;
-        border-radius: 50%;
-        background: #f0ad4e;
-        margin-right: $uni-spacing-row-base;
-        
-    }
+    //&::before{
+    //    display: block;
+    //    content: '';
+    //    width: 10rpx;
+    //    height: 10rpx;
+    //    border-radius: 50%;
+    //    background: #f0ad4e;
+    //    margin-right: $uni-spacing-row-base;
+    //
+    //}
 }
 </style>

@@ -9,7 +9,7 @@
       <view class="panel--bar">
         <text>出发时间：</text>
         <view class="time-bar">
-          <picker mode="date" fields="day" :value="departDay" :start="start" :end="end">
+          <picker mode="date" fields="day" :value="departDay" :start="start" :end="end" class="time-date">
             <view class="time">{{ departDay }}</view>
           </picker>
           <picker mode="time" :value="departTime" @change="handleTimeChange" start="00:00" end="23:59">
@@ -165,6 +165,8 @@ const handleConfirm = async () => {
   });
   if (!HandleApiError(error)) {
     uni.redirectTo({url: '/pages/orderDetail'})
+
+
   }
 }
 const handleCancel = () => {
@@ -259,6 +261,9 @@ const getUserProgressOrder = async () => {
                 border-bottom: 0;
                 margin-left: $uni-spacing-base;
             }
+          .time-date{
+            margin-right: 15px;
+          }
         }
     }
     .operation{

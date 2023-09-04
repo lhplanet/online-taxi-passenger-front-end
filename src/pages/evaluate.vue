@@ -1,22 +1,31 @@
 <template>
   <view class="evaluate">
-    <text class="title">请填写评价</text>
-    <textarea
-        v-model="evaluation"
-        class="textarea"
-        placeholder="请输入评价内容（100字以内）"
-        maxlength="100"
-    ></textarea>
-    <text class="title">请评分</text>
-    <view class="stars">
-      <text
-          v-for="(star, index) in 5"
-          :key="index"
-          @click="rate(index + 1)"
-          :class="{'star-icon': true, 'star-icon-selected': index < rateValue}"
-      >
-        ★
-      </text>
+    <view class="title-section">
+      <view class="title-success"><text>支付成功</text></view>
+      <view class="subtitle"><text>请给予我们宝贵的评价</text></view>
+      <view class="subtitle"><text>您的督促是我们进步的最大动力</text></view>
+    </view>
+    <view class="star-box card"> <!-- 添加 card 类 -->
+      <text class="title">请评分</text>
+      <view class="stars">
+        <text
+            v-for="(star, index) in 5"
+            :key="index"
+            @click="rate(index + 1)"
+            :class="{'star-icon': true, 'star-icon-selected': index < rateValue}"
+        >
+          ★
+        </text>
+      </view>
+    </view>
+    <view class="evaluate-box card"> <!-- 添加 card 类 -->
+      <text class="title">请评价</text>
+      <textarea
+          v-model="evaluation"
+          class="textarea"
+          placeholder="请输入评价内容（100字以内）"
+          maxlength="100"
+      ></textarea>
     </view>
     <button @click="submit" class="submit-button">提交评价</button>
   </view>
@@ -82,6 +91,10 @@ export default {
 
       if (!HandleApiError(error)) {
         uni.redirectTo({url: '/pages/index/index'});
+        uni.showToast({
+          title: '评价成功',
+          icon: 'none',
+        });
         // getPassengerInfo();
       } else {
         uni.showToast({
@@ -101,18 +114,52 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .evaluate {
   padding: 20px;
 }
 
-.title {
+.title-section {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.title-success {
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: green;
+}
+
+.subtitle {
+  color: rgba(102, 102, 102, 0.8);
+  font-weight: bold;
   font-size: 18px;
-  margin-bottom: 10px;
+}
+
+/*.subtitle-small {*/
+/*  font-size: 14px;*/
+/*}*/
+
+.card {
+  background-color: #ffffff; /* 背景色 */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+  border-radius: 10px; /* 圆角边框 */
+  padding: 20px;
+  margin-bottom: 20px; /* 添加间距 */
+}
+
+.title {
+  font-weight: bold;
+  font-size: 18px;
+  color: #666666;
+  /*margin-bottom: 10px;*/
 }
 
 .textarea {
-  width: 100%;
+  margin-top: 15px;
+  width: 94%;
   height: 120px;
   padding: 10px;
   font-size: 16px;
@@ -121,8 +168,10 @@ export default {
 }
 
 .stars {
+  margin-top: 10px;
   display: flex;
   justify-content: flex-start;
+  color: #c4c4c4;
 }
 
 .star-icon {
@@ -131,19 +180,23 @@ export default {
 }
 
 .star-icon-selected {
-  color: #ffdb00;
+  color: #ff9f00;
 }
 
 .submit-button {
-  width: 100%;
+  width: 650rpx;
   margin-top: 20px;
-  background-color: #007aff;
-  color: #fff;
+  font-size: $uni-font-size-lg;
+  background: $uni-color-primary;
+  color: $uni-text-color-inverse;
   border: none;
   border-radius: 4px;
-  padding: 10px;
-  font-size: 18px;
+  //padding: 10px;
   text-align: center;
   cursor: pointer;
+
+  /*margin: 0;*/
+  /*width: 45%;*/
+
 }
 </style>

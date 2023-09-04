@@ -10,7 +10,9 @@
         </text>
       </view>
     </view>
-    <button class="login--btn" @click="handleLogin">登录</button>
+    <view class="login--center">
+      <button class="login--btn" @click="handleLogin">登录</button>
+    </view>
   </view>
 </template>
 
@@ -138,6 +140,11 @@ const handleAccount = () => {
 .login{
 	width: 650rpx;
 	margin: 0 auto;
+  // 解决登录按钮在屏幕宽度超过976px后不居中的问题
+  &--center {
+    display: grid;
+    place-items: center;
+  }
 	&--input{
 		border-bottom: 2rpx solid $uni-border-color;
 		width: 650rpx;
