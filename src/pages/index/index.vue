@@ -2,8 +2,9 @@
   <view class="map-wrapper">
     <BMap ref="mapRef"/>
     <view class="city" @click="handleCity()">{{ city.name }}</view>
-    <view class="system" @click="handleSystem()">设置</view>
-    <SelectPoint v-if="loadingFinish" @confirm="handleConfrimPoint"/>
+<!--    <view class="system" @click="handleSystem()">设置</view>-->
+    <view class="system" @click="handleLogout()">退出</view>
+    <SelectPoint v-if="loadingFinish" @confirm="handleConfirmPoint"/>
   </view>
 </template>
 
@@ -48,7 +49,7 @@ function setCenter() {
  * @param {*} end
  * @return {*}
  */
-const handleConfrimPoint = async (start, end) => {
+const handleConfirmPoint = async (start, end) => {
   const [startLng, startLat] = start.location;
   const [endLng, endLat] = end.location;
   uni.navigateTo({
@@ -64,9 +65,14 @@ const handleCity = () => {
   uni.navigateTo({url: '/pages/city'});
 }
 
-const handleSystem = () => {
-  uni.navigateTo({url: '/pages/account'});
+const handleLogout = () =>{
+  $store.commit('setToken', '');
+  uni.redirectTo({url:'/pages/login'});
 }
+
+// const handleSystem = () => {
+//   uni.navigateTo({url: '/pages/account'});
+// }
 </script>
 
 

@@ -14,10 +14,10 @@
                 <view class="desc" v-if="orderDetail.orderStatus === ORDER_STATUS.orderStart">等待附近司机接单中...</view>
                 <view class="desc">
                     <text>{{orderDetail.vehicleNo}}</text>
-                    <text v-if="orderDetail.orderStatus === ORDER_STATUS.driverReceive">已接单</text>
-                    <text v-if="orderDetail.orderStatus === ORDER_STATUS.driverToPickUp">正在赶来的路上</text>
-                    <text v-if="orderDetail.orderStatus === ORDER_STATUS.driverArriveStartPoint">到达上车点</text>
-                    <text v-if="orderDetail.orderStatus === ORDER_STATUS.tripStart">正在为您服务</text>
+                    <text v-if="orderDetail.orderStatus === ORDER_STATUS.driverReceive">司机已接单</text>
+                    <text v-if="orderDetail.orderStatus === ORDER_STATUS.driverToPickUp">司机正在赶来的路上</text>
+                    <text v-if="orderDetail.orderStatus === ORDER_STATUS.driverArriveStartPoint">司机已到达上车点</text>
+                    <text v-if="orderDetail.orderStatus === ORDER_STATUS.tripStart">司机正在为您服务</text>
                 </view>
                 <button @click="handleCancel"  class="btn btn_cancel">取消订单</button>
             </template>
@@ -79,10 +79,25 @@ const handlePay = () =>{
  * @return {*}
  */
 const handleReceiveMsg = (msg) =>{
-    
+  // console.log("============sxxxxxxxxxxxxxxxss===========")
     if(msg.price){
+      // console.log("============sssssssssss===========")
         orderDetail.value.price = msg.price;
         orderDetail.value.orderStatus = ORDER_STATUS.awaitPay;
+    }
+    if(msg.orderState){
+      if(msg.orderState === ORDER_STATUS.driverToPickUp){
+        orderDetail.value.orderStatus = ORDER_STATUS.driverToPickUp;
+      }
+      if(msg.orderState === ORDER_STATUS.driverArriveStartPoint){
+        orderDetail.value.orderStatus = ORDER_STATUS.driverArriveStartPoint;
+      }
+      if(msg.orderState === ORDER_STATUS.tripStart){
+        orderDetail.value.orderStatus = ORDER_STATUS.tripStart;
+      }
+      if(msg.orderState === ORDER_STATUS.tripFinish){
+        orderDetail.value.orderStatus = ORDER_STATUS.tripFinish;
+      }
     }
 }
 </script>

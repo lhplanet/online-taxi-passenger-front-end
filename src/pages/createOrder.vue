@@ -43,8 +43,8 @@ import BMap from '../component/BMap.vue';
 import {onLoad} from '@dcloudio/uni-app';
 import {computed, nextTick, onMounted, ref, watch} from 'vue';
 import {useStore} from 'vuex';
-import {HandleApiError} from '../utils';
-import {ApiGetPrice, ApiPostOrderAdd, ApiGetCurrentOrder} from '../api/order';
+import {HandleApiError, ShowToast} from '../utils';
+import {ApiGetPrice, ApiPostOrderAdd, ApiGetCurrentOrder, ApiP2DBegin} from '../api/order';
 import {_FormatDate} from '@gykeji/jsutil';
 
 
@@ -156,7 +156,7 @@ const handleConfirm = async () => {
     destination: dest,
     destLongitude,
     destLatitude,
-    encrypt: 14, // 坐标加密标识
+    encrypt: 4, // 坐标加密标识
     fareType: priceResult.value.fareType,
     fareVersion: priceResult.value.fareVersion,
     passengerId: userInfo.value.id,
@@ -164,11 +164,24 @@ const handleConfirm = async () => {
     vehicleType: vehicleType.value, // 包括车辆类型
   });
   if (!HandleApiError(error)) {
+
+    await pushP2DBegin(); // 发起推送，刷新司机端
+
     uni.redirectTo({url: '/pages/orderDetail'})
-
-
   }
 }
+
+const pushP2DBegin = async () => {
+  // 发起推送，刷新司机端
+  const {error:er} = await ApiP2DBegin({
+    // driverId: result.driverId,
+    driverId: 3, // TODO: 测试用
+  });
+  if(!HandleApiError(er)){
+    ShowToast('下单成功，请等待司机接单');
+  }
+}
+
 const handleCancel = () => {
   uni.navigateBack();
 }

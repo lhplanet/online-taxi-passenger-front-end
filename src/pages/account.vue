@@ -3,15 +3,15 @@
         <view class="title">在此设置你的后端服务地址：</view>
         <view class="item">
             <text class="label">支付服务</text>
-            <input class="input" v-model="serverConf.pay" />    
+            <input class="input" v-model="serverConf.pay" />
         </view>
         <view class="item">
             <text class="label">SSE服务</text>
-            <input class="input" v-model="serverConf.sse" />    
+            <input class="input" v-model="serverConf.sse" />
         </view>
         <view class="item">
             <text class="label">其他服务</text>
-            <input class="input" v-model="serverConf.other" />    
+            <input class="input" v-model="serverConf.other" />
         </view>
         <button class="btn" @click="handleSave">保存</button>
         <view class="desc">保存成功后如不生效，请重启APP</view>

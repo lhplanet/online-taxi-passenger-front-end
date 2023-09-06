@@ -63,10 +63,21 @@ const ApiPostOrderCancel = ({orderId}) => MsbRequest.post('/order/cancel',{order
  */
 const ApiGetCurrentOrder = () => MsbRequest.get('/order/current');
 
+/**
+ * 推送下单成功，刷新司机端
+ * @param data
+ * @returns {Promise<any>}
+ * @constructor
+ */
+const ApiP2DBegin = (data = { driverId }) => MsbRequest.post('/order/pd-begin',data, {
+    "content-type" : 'application/x-www-form-urlencoded'
+})
+
 export {
     ApiGetUserProgressOrder,
     ApiGetPrice,
     ApiPostOrderAdd,
     ApiPostOrderCancel,
-    ApiGetCurrentOrder
+    ApiGetCurrentOrder,
+    ApiP2DBegin
 };

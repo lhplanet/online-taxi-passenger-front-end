@@ -53,7 +53,7 @@ const handleGetVerifyCode = async () => {
     return false;
   }
   // 设置重新获取验证码倒计时
-  codeTimerNum.value = 10;
+  codeTimerNum.value = 5;
   // 开始倒计时
   calcTimer();
   // 发送验证码
